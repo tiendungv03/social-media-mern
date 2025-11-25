@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import Header from "./layouts/Header";
+import Post from "./components/Posts/Post/Post";
+import Posts from "./components/Posts/Posts";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showPost, setShowPost] = useState(false);
+
+  const user = { name: "Tien Dung" };
+
+  const handleLoginClick = () => {
+    console.log("login / logout here");
+  };
+
+  const handleClick = () => {
+    console.log("Clicked");
+    setShowPost(true);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Header user={user} onLoginClick={handleLoginClick} />
+      <div className="">
+        <Posts />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button onClick={handleClick}>Post</button>
+
+      {showPost && <Post />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
