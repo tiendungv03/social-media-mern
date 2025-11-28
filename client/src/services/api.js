@@ -6,6 +6,10 @@ export const api = axios.create({
   baseURL,
 });
 
+export const register = (newUser) => api.post("/users/register", newUser);
+
+export const login = (user) => api.post("/users/login", user);
+
 export const fetchPosts = () => api.get("/posts");
 
 export const createPost = (newPost) => api.post("/posts", newPost);

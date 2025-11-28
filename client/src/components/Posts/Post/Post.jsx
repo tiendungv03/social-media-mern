@@ -2,7 +2,7 @@
 import { useState } from "react";
 import * as api from "../../../services/api";
 
-const Post = () => {
+const Post = ({ onCreated }) => {
   const [postData, setPostData] = useState({
     title: "",
     message: "",
@@ -27,6 +27,7 @@ const Post = () => {
 
       const response = await api.createPost(payload);
       console.log("Post created:", response.data);
+      onCreated && onCreated();
 
       setPostData({
         title: "",
