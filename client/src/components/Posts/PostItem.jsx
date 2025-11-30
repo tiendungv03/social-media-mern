@@ -1,7 +1,32 @@
+import { useState } from "react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { FavouriteIcon } from "@hugeicons/core-free-icons";
+import * as api from "../../services/api";
+
+// useState
 const PostItem = ({ post }) => {
+  const [likeCount, setLikeCount] = useState(post.likeCount || 0);
+  const [isLiking, setIsLiking] = useState(false);
+
   const imageSrc =
     post.selectedFile ||
     "https://via.placeholder.com/300x180.png?text=No+Image";
+
+  const handleLike = async () => {
+    // if (isLiking) return;
+    // console.log("data post: ", post);
+    setIsLiking(true);
+
+    setLikeCount((prev) => prev + 1); // optimistic
+    try {
+      await api.likePost(post._id);
+    } catch (err) {
+      console.error("Like failed:", err);
+      setLikeCount((prev) => prev - 1); // revert
+    } finally {
+      setIsLiking(false);
+    }
+  };
 
   return (
     <div className="m-3.5 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
@@ -48,8 +73,34 @@ const PostItem = ({ post }) => {
           </div>
 
           <div className="flex items-center gap-1 text-amber-600">
-            <span>❤️</span>
-            <span className="font-medium">{post.likeCount ?? 0}</span>
+            <button
+              type="button"
+              onClick={handleLike}
+              className="flex items-center gap-1 text-sm text-slate-500 hover:text-rose-500 transition-colors"
+            >
+              {/* {liked ? (
+                <HugeiconsIcon
+                  icon={FavouriteIcon}
+                  size={24}
+                  color="currentColor"
+                  strokeWidth={1.5}
+                />
+              ) : (
+                <HugeiconsIcon
+                  icon={FavouriteIcon}
+                  size={24}
+                  color="currentColor"
+                  strokeWidth={1.5}
+                />
+              )} */}
+              <HugeiconsIcon
+                icon={FavouriteIcon}
+                size={24}
+                color={isLiking ? "red" : "currentColor"}
+                strokeWidth={1.5}
+              />
+              <span>{likeCount}</span>
+            </button>
           </div>
         </div>
       </div>
